@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
-BEARER="YOUR_OPENTACT_TOKEN"
-SIP_CONN_UUID="YOUR_SIP_CONN_UUID"
+BEARER=$1
+SIP_CONN_UUID=$2
 
 TAKE=100
 SKIP=0
+
+if [[ "x$SIP_CONN_UUID" == "x" ]]
+then
+  echo "Usage: $0 <BEARER TOKEN> <SIP CONNECTION UUID>"
+  exit 1
+fi
 
 function getNext() {
   echo $(curl -X POST "https://api.opentact.org/rest/lease/tn/search?bearer=${BEARER}&take=$1&skip=$2" 2>/dev/null | jq '.payload')
